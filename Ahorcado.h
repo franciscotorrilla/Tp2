@@ -31,6 +31,12 @@ class Ahorcado {
         //pos: imprime palabraProgreso
         void mostrarProgreso();
 
+        // Funcion auxiliar que ayuda a la modularizacion y para saber si el caracter pertenece a la palabra adivinar
+        bool comprobarLetra(char caracter);
+
+        // Funcion auxiliar que ayuda a la modularizacion y para saber si la palabra es la misma que la que se quiere adivinar
+        bool comprobarPalabra(std::string palabra);
+
         //pre: recibe un string por parametro y lo compara con la palabra a adivinar
         //pos: devuelve true si el string es igual a la palabra, false caso contrario
         bool arriesgar(std::string palabra);
@@ -40,6 +46,7 @@ class Ahorcado {
         //pos: devuelve true si la letra arriesgada esta en la palabra a adivinar, false caso contrario
         bool arriesgar(char letra);
 
+        //pos: consulta si el jugador completo la palabra correctamente letra a letra
         bool gano();
 
         void buscarPalabrasArchivo();
