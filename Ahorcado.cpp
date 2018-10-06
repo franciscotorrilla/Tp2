@@ -3,16 +3,19 @@
 #include <fstream>
 #include <stdlib.h>
 #include <iostream>
+#include <ctime>
 #include "Vector.h"
 using namespace std;
 
 
 Ahorcado::Ahorcado(unsigned longitud) {
 
-    palabraAdivinar = buscadorPalabra(longitud) ;
+    //randomiza la seed del random.
+    srand(time(NULL));
+    palabraAdivinar = buscadorPalabra(longitud);
     palabraProgreso = new Vector(longitud);
     rellenar(longitud,'-');
-    erroresMaximos= dificultad();
+    erroresMaximos = dificultad();
     letrasErroneas = new Vector(erroresMaximos);
     cantidadErrores = 0;
 }
@@ -20,7 +23,7 @@ Ahorcado::Ahorcado(unsigned longitud) {
 string Ahorcado::buscadorPalabra(unsigned longitud){
 
     ifstream archivo;
-    unsigned pos=0, random;
+    unsigned pos=0, random=0;
     string linea, listado[2000];
     archivo.open("palabras.txt");
     while (archivo>>linea){
@@ -29,7 +32,10 @@ string Ahorcado::buscadorPalabra(unsigned longitud){
             pos++;
         }
     }
-    random = rand() % pos+1;
+    if (pos == 0){
+        cout << "No tenemos palabras con esa longitud.";
+    }
+    random = rand() % pos;
     archivo.close();
     return listado[random];
 }
@@ -43,7 +49,7 @@ void Ahorcado::rellenar(unsigned longitud, char relleno){
 
 unsigned Ahorcado::dificultad() {
 
-    char x=0;
+    char x;
     cout << "Ingrese 1 para jugar en facil." <<endl;
     cout << "Ingrese 2 para jugar en normal." <<endl;
     cout << "Ingrese 3 para jugar en dificil." <<endl;
