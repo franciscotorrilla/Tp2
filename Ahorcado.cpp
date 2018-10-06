@@ -209,7 +209,7 @@ Ahorcado::~Ahorcado() {
 bool Ahorcado::comprobarLetra(char caracter) {
 
         caracter = toupper(caracter);
-        if(arriesgar(caracter) || !estaEnJuego()) {
+        if(!arriesgar(caracter) && !estaEnJuego()) {
             cout <<"Perdiste"<<endl;
             mostrarPalabraAdivinar();
             return false;
