@@ -1,44 +1,22 @@
 #include "Ahorcado.h"
 #include <string>
 #include <fstream>
-#include <stdlib.h>
 #include <iostream>
-#include <ctime>
 #include "Vector.h"
 using namespace std;
 
 
-Ahorcado::Ahorcado(unsigned longitud) {
+Ahorcado::Ahorcado(string palabra) {
 
-    //randomiza la seed del random.
-    srand(time(NULL));
-    palabraAdivinar = buscadorPalabra(longitud);
-    palabraProgreso = new Vector(longitud);
-    rellenar(longitud,'-');
+    palabraAdivinar = palabra;
+    palabraProgreso = new Vector(palabra.length());
+    rellenar(palabra.length(),'-');
     erroresMaximos = dificultad();
     letrasErroneas = new Vector(erroresMaximos);
     cantidadErrores = 0;
 }
 
-string Ahorcado::buscadorPalabra(unsigned longitud){
 
-    ifstream archivo;
-    unsigned pos=0, random=0;
-    string linea, listado[2000];
-    archivo.open("palabras.txt");
-    while (archivo>>linea){
-        if (linea.length()==longitud){
-            listado[pos]=linea;
-            pos++;
-        }
-    }
-    if (pos == 0){
-        cout << "No tenemos palabras con esa longitud.";
-    }
-    random = rand() % pos;
-    archivo.close();
-    return listado[random];
-}
 
 void Ahorcado::rellenar(unsigned longitud, char relleno){
 
@@ -170,7 +148,7 @@ void Ahorcado::sumarError() {
 
 bool Ahorcado::letraPerteneceErrores(char letra) {
 
-    for(unsigned i = 0; i < letrasErroneas->obtenerLongitud(); i++) {
+    for(unsigned i = 0; i < cantidadErrores; i++) {
         if(letra == letrasErroneas->obtenerDato(i)) {
             return true;
         }
@@ -180,7 +158,7 @@ bool Ahorcado::letraPerteneceErrores(char letra) {
 
 bool Ahorcado::letraYaAcertada(char letra) {
 
-    for(unsigned i = 0; i < palabraProgreso->obtenerLongitud(); i++) {
+    for(unsigned i = 0; i < palabraAdivinar.length(); i++) {
         if(letra == palabraProgreso->obtenerDato(i)) {
             return true;
         }
@@ -236,12 +214,12 @@ void Ahorcado::mostrarLetrasErroneas() {
     }
 }
 
-void Ahorcado::nuevaPalabra(unsigned longitud){
+void Ahorcado::nuevaPalabra(string palabra){
 
-    if(!longitud) return;
-    palabraAdivinar = buscadorPalabra(longitud);
-    palabraProgreso->cambiarLongitud(longitud);
-    rellenar(longitud,'-');
+    if(!palabra.length()) return;
+    palabraAdivinar = palabra;
+    palabraProgreso->cambiarLongitud(palabra.length());
+    rellenar(palabra.length(),'-');
     erroresMaximos= dificultad();
     letrasErroneas->cambiarLongitud(erroresMaximos);
     cantidadErrores = 0;
