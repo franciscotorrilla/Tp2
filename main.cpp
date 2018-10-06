@@ -25,8 +25,10 @@ int main() {
         cout << "Ingrese la longitud de la palabra a adivinar (0 si quiere dejar de jugar): ";
         cin >> longitud;
         longitud = corroborarLongitud(longitud);
-        palabra = buscadorPalabra(longitud);
-        ahorcado.nuevaPalabra(palabra);
+        if (longitud !=0){
+            palabra = buscadorPalabra(longitud);
+            ahorcado.nuevaPalabra(palabra);
+        }
     }
     return 0;
 }
