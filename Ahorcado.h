@@ -1,4 +1,3 @@
-
 #ifndef AHORCADO_H
 #define AHORCADO_H
 #include "Vector.h"
@@ -19,7 +18,7 @@ class Ahorcado {
         //pre: recibe una palabra a adivinar mayor a 2 caracteres, y la cantidad de errores que el
         //usuario puede cometer tambien deben ser mayor a 2.
         //post: crea el juego.
-        Ahorcado(unsigned longitud);
+        Ahorcado(std::string palabra);
 
         //pre: -
         //post: mientras el jugador no pierda ni gane llama a ingresoDeDato.
@@ -27,16 +26,13 @@ class Ahorcado {
 
         //pre: recibe una longitud mayor a 2.
         //post: modifica los atributos asociados a la nueva longitud.
-        void nuevaPalabra(unsigned longitud);
+        void nuevaPalabra(std::string palabra);
 
         //pre: -
         //post: destructor de los dos vectores din�micos.
         ~Ahorcado();
 
     private:
-        //pre: recibe una longitud mayor a 2.
-        //post:
-        std::string buscadorPalabra(unsigned longitud);
 
         //pre: -
         //post: rellena con el parametro relleno el vector palabraProgreso
