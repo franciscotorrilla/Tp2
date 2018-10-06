@@ -17,12 +17,21 @@ Ahorcado::Ahorcado(unsigned longitud) {
     cantidadErrores = 0;
 }
 
-void Ahorcado::juego(){
-    bool estaEnJuego = true;
-    while(estaEnJuego) {
-        mostrarProgreso();
-        estaEnJuego=ingresoDeDato();
+string Ahorcado::buscadorPalabra(unsigned longitud){
+
+    ifstream archivo;
+    unsigned pos=0, random;
+    string linea, listado[2000];
+    archivo.open("palabras.txt");
+    while (archivo>>linea){
+        if (linea.length()==longitud){
+            listado[pos]=linea;
+            pos++;
+        }
     }
+    random = rand() % pos+1;
+    archivo.close();
+    return listado[random];
 }
 
 void Ahorcado::rellenar(unsigned longitud, char relleno){
@@ -32,30 +41,35 @@ void Ahorcado::rellenar(unsigned longitud, char relleno){
     }
 }
 
-void Ahorcado::mostrarPalabraAdivinar() {
+unsigned Ahorcado::dificultad() {
 
-    cout<< "La palabra a adivinar era: " << palabraAdivinar << endl;
+    char x=0;
+    cout << "Ingrese 1 para jugar en facil." <<endl;
+    cout << "Ingrese 2 para jugar en normal." <<endl;
+    cout << "Ingrese 3 para jugar en dificil." <<endl;
+    cin >> x;
+    switch(x) {
+        case '1' : cout << "Tenes 7 errores." <<endl;
+            return 7;
+        case '2' : cout << "Tenes 5 errores." <<endl;
+            return 5;
+        case '3' : cout << "Tenes 3 errores." <<endl;
+            return 3;
+        default:  cout << "Dato invalido." <<endl;
+            dificultad();
+    }
+    return 0;
 }
 
-void Ahorcado::sumarError() {
-
-    cantidadErrores++;
-}
-
-unsigned Ahorcado::obtenerErroresMaximos(){
-
-    return erroresMaximos;
-}
-
-void Ahorcado::mostrarErroresRestantes() {
-
-    if ((erroresMaximos - cantidadErrores)!=1)
-        cout<< "Te quedan " << erroresMaximos - cantidadErrores << " errores restantes"<< endl;
-    else{
-        cout<< "Te queda 1 error restante" << endl;
-        cout << "Se recomienda arriesgar la palabra" << endl;
+void Ahorcado::juego(){
+    bool estaEnJuego = true;
+    while(estaEnJuego) {
+        cout <<endl;
+        mostrarProgreso();
+        estaEnJuego=ingresoDeDato();
     }
 }
+
 void Ahorcado::mostrarProgreso() {
 
     for(unsigned i = 0; i < palabraAdivinar.length(); i++){
@@ -63,6 +77,56 @@ void Ahorcado::mostrarProgreso() {
     }
     cout <<endl;
 }
+
+bool Ahorcado::ingresoDeDato(){
+
+    string datoIngresado;
+    cout << "Ingrese palabra/letra: ";
+    cin >> datoIngresado;
+    if(datoIngresado.length() == 1)
+         return comprobarDato(datoIngresado[0]);
+
+    else
+        return comprobarDato(datoIngresado);
+}
+
+bool Ahorcado::comprobarDato(char caracter) {
+
+        caracter = toupper(caracter);
+        if(!arriesgar(caracter) && !estaEnJuego()) {
+            cout <<"Perdiste"<<endl;
+            mostrarPalabraAdivinar();
+            return false;
+        }
+        if (gano()){
+           cout <<"Ganaste"<<endl;
+           return false;
+        }
+        mostrarLetrasErroneas();
+        mostrarErroresRestantes();
+        return true;
+}
+
+bool Ahorcado::comprobarDato(string palabra) {
+
+        if(palabra.length()!=palabraAdivinar.length()){
+            cout << "El tamanio no corresponde con el de la palabra a adivinar." <<endl;
+            return ingresoDeDato();
+        }
+        //IngresaPalabra
+        for (unsigned i=0 ; i < palabra.length() ; i++){
+            palabra[i]=toupper(palabra[i]);
+        }
+        if(arriesgar(palabra)) {
+            cout <<"Ganaste"<<endl;
+        }
+        else {
+            cout <<"Perdiste"<<endl;
+            mostrarPalabraAdivinar();
+        }
+        return false;
+}
+
 
 bool Ahorcado::arriesgar(string palabra) {
 
@@ -76,7 +140,7 @@ bool Ahorcado::arriesgar(char letra){
 
     bool acierto = false;
     // Chequeo si la letra ya fue ingresada con anterioridad
-    if( letraPerteneceErrores(letra) || letraYaAcertada(letra)) {
+    if(letraPerteneceErrores(letra) || letraYaAcertada(letra)) {
         cout <<"La letra ya fue ingresada anteriormente."<<endl;
         return true;
     }
@@ -93,45 +157,9 @@ bool Ahorcado::arriesgar(char letra){
     return acierto;
 }
 
-bool Ahorcado::gano(){
+void Ahorcado::sumarError() {
 
-    for(unsigned i = 0; i < palabraAdivinar.length(); i ++){
-        if(palabraProgreso->obtenerDato(i) == '-'){
-            return false;
-        }
-    }
-    return true;
-}
-
-bool Ahorcado::ingresoDeDato(){
-
-    string datoIngresado;
-    cout << "Ingrese palabra/letra: ";
-    cin >> datoIngresado;
-    if(datoIngresado.length() == 1)
-         return comprobarLetra(datoIngresado[0]);
-
-    else
-        return comprobarPalabra(datoIngresado);
-}
-
-bool Ahorcado::estaEnJuego() {
-
-    if(cantidadErrores < erroresMaximos){
-        return true;
-    }
-    return false;
-}
-
-void Ahorcado::mostrarLetrasErroneas() {
-
-    if(cantidadErrores > 0 ) {
-        cout << "Las letras erroneas son: ";
-        for(unsigned i = 0; i < cantidadErrores-1; i ++) {
-            cout << letrasErroneas->obtenerDato(i) << "-";
-        }
-        cout << letrasErroneas->obtenerDato(cantidadErrores-1) << endl;
-    }
+    cantidadErrores++;
 }
 
 bool Ahorcado::letraPerteneceErrores(char letra) {
@@ -153,40 +181,53 @@ bool Ahorcado::letraYaAcertada(char letra) {
     }
     return false;
 }
-string Ahorcado::buscadorPalabra(unsigned longitud){
 
-    ifstream archivo;
-    unsigned pos=0, random;
-    string linea, listado[2000];
-    archivo.open("palabras.txt");
-    while (archivo>>linea){
-        if (linea.length()==longitud){
-            listado[pos]=linea;
-            pos++;
-        }
+bool Ahorcado::estaEnJuego() {
+
+    if(cantidadErrores < erroresMaximos){
+        return true;
     }
-    random = rand() % pos+1;
-    archivo.close();
-    return listado[random];
+    return false;
 }
 
-unsigned Ahorcado::dificultad() {
-    char x=0;
-    cout << "Ingrese 1 para jugar en facil." <<endl;
-    cout << "Ingrese 2 para jugar en normal." <<endl;
-    cout << "Ingrese 3 para jugar en dificil." <<endl;
-    cin >> x;
-    switch(x) {
-        case '1' : cout << "Tenes 7 errores." <<endl;
-            return 7;
-        case '2' : cout << "Tenes 5 errores." <<endl;
-            return 5;
-        case '3' : cout << "Tenes 3 errores." <<endl;
-            return 3;
-        default:  cout << "Dato invalido." <<endl;
-            dificultad();
+void Ahorcado::mostrarPalabraAdivinar() {
+
+    cout<< "La palabra a adivinar era: " << palabraAdivinar << endl;
+}
+
+unsigned Ahorcado::obtenerErroresMaximos(){
+
+    return erroresMaximos;
+}
+
+void Ahorcado::mostrarErroresRestantes() {
+
+    if ((erroresMaximos - cantidadErrores)!=1)
+        cout<< "Te quedan " << erroresMaximos - cantidadErrores << " errores restantes"<< endl;
+    else{
+        cout<< "Te queda 1 error restante" << endl;
     }
-    return 0;
+}
+
+bool Ahorcado::gano(){
+
+    for(unsigned i = 0; i < palabraAdivinar.length(); i ++){
+        if(palabraProgreso->obtenerDato(i) == '-'){
+            return false;
+        }
+    }
+    return true;
+}
+
+void Ahorcado::mostrarLetrasErroneas() {
+
+    if(cantidadErrores > 0 ) {
+        cout << "Las letras erroneas son: ";
+        for(unsigned i = 0; i < cantidadErrores-1; i ++) {
+            cout << letrasErroneas->obtenerDato(i) << "-";
+        }
+        cout << letrasErroneas->obtenerDato(cantidadErrores-1) << endl;
+    }
 }
 
 void Ahorcado::nuevaPalabra(unsigned longitud){
@@ -204,40 +245,3 @@ Ahorcado::~Ahorcado() {
     delete palabraProgreso;
     delete letrasErroneas;
 }
-
-
-bool Ahorcado::comprobarLetra(char caracter) {
-
-        caracter = toupper(caracter);
-        if(!arriesgar(caracter) && !estaEnJuego()) {
-            cout <<"Perdiste"<<endl;
-            mostrarPalabraAdivinar();
-            return false;
-        }
-        if (gano()){
-           cout <<"Ganaste"<<endl;
-           return false;
-        }
-        mostrarLetrasErroneas();
-        mostrarErroresRestantes();
-        return true;
-}
-
-bool Ahorcado::comprobarPalabra(string palabra) {
-        if(palabra.length()!=palabraAdivinar.length()){
-            cout << "El tamanio no corresponde con el de la palabra a adivinar." <<endl;
-            return ingresoDeDato();
-        }
-        //IngresaPalabra
-        for (unsigned i=0 ; i < palabra.length() ; i++){
-            palabra[i]=toupper(palabra[i]);
-        }
-        if(arriesgar(palabra)) {
-            cout <<"Ganaste"<<endl;
-        }
-        else {
-            cout <<"Perdiste"<<endl;
-            mostrarPalabraAdivinar();
-        }
-        return false;
-    }
