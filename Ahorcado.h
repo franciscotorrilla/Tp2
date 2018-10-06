@@ -1,3 +1,4 @@
+
 #ifndef AHORCADO_H
 #define AHORCADO_H
 #include "Vector.h"
@@ -5,6 +6,7 @@
 
 class Ahorcado {
 
+    //Atributos
     private:
         std::string palabraAdivinar;
         Vector* palabraProgreso;
@@ -12,72 +14,97 @@ class Ahorcado {
         unsigned cantidadErrores;
         Vector* letrasErroneas;
 
+    //M�todos
     public:
-        /* pre: recibe una palabra a adivinar mayor a 2 caracteres, y la cantidad de errores que el
-        usuario puede cometer tambien deben ser mayor a 2.
-        pos: crea el juego */
+        //pre: recibe una palabra a adivinar mayor a 2 caracteres, y la cantidad de errores que el
+        //usuario puede cometer tambien deben ser mayor a 2.
+        //post: crea el juego.
         Ahorcado(unsigned longitud);
 
-        void mostrarPalabraAdivinar();
-
-        //pos: suma un error cuando el usuario arriesga una letra y no acierta
-        void sumarError();
-
-        //pos: devuelve la cantidad de erores que el usuario puede cometer
-        unsigned obtenerErroresMaximos();
-
-        void mostrarErroresRestantes();
-
-        //pos: imprime palabraProgreso
-        void mostrarProgreso();
-
-        // Funcion auxiliar que ayuda a la modularizacion y para saber si el caracter pertenece a la palabra adivinar
-        bool comprobarLetra(char caracter);
-
-        // Funcion auxiliar que ayuda a la modularizacion y para saber si la palabra es la misma que la que se quiere adivinar
-        bool comprobarPalabra(std::string palabra);
-
-        //pre: recibe un string por parametro y lo compara con la palabra a adivinar
-        //pos: devuelve true si el string es igual a la palabra, false caso contrario
-        bool arriesgar(std::string palabra);
-
-        //pre: recibe una letra por parametro y la coloca en las posiciones correspondientes
-        // de la palabra a adivinar.
-        //pos: devuelve true si la letra arriesgada esta en la palabra a adivinar, false caso contrario
-        bool arriesgar(char letra);
-
-        //pos: consulta si el jugador completo la palabra correctamente letra a letra
-        bool gano();
-
-        void buscarPalabrasArchivo();
-
-        bool estaEnJuego();
-        //pos: devuelve las letras que el usuario ingresa erroneamente
-        void mostrarLetrasErroneas();
-
-        bool seguirJugando();
-
-        void nuevaPalabra(unsigned longitud);
-
-        bool ingresoDeDato();
-
+        //pre: -
+        //post: mientras el jugador no pierda ni gane llama a ingresoDeDato.
         void juego();
 
+        //pre: recibe una longitud mayor a 2.
+        //post: modifica los atributos asociados a la nueva longitud.
+        void nuevaPalabra(unsigned longitud);
+
+        //pre: -
+        //post: destructor de los dos vectores din�micos.
         ~Ahorcado();
 
     private:
-
-        // Funcion privada que rellena con el parametro relleno el vector palabraProgreso
-        // pos: palabraProgreso -> relleno en cada posicion
-        void rellenar(unsigned longitud, char relleno);
-
-        bool letraPerteneceErrores(char letra);
-
-        bool letraYaAcertada(char letra);
-
+        //pre: recibe una longitud mayor a 2.
+        //post:
         std::string buscadorPalabra(unsigned longitud);
 
+        //pre: -
+        //post: rellena con el parametro relleno el vector palabraProgreso
+        void rellenar(unsigned longitud, char relleno);
+
+        //pre: -
+        //post: pide ingreso de dificultad y devuelve la cantidad de erorres correspondiente.
         unsigned dificultad();
+
+        //pre: -
+        //post: imprime palabraProgreso.
+        void mostrarProgreso();
+
+        //pre: -
+        //post: pide ingreso de dato y llama a comprobarDato.
+        bool ingresoDeDato();
+
+        //pre: recibe un caracter valido.
+        //post: llama a arriesgar , a mostrarLetrasErroneas y a mostrarErroresRestantes y avisa si ganaste o perdiste.
+        bool comprobarDato(char caracter);
+
+        //pre: recibe un string valido.
+        //post: llama a arriesgar y avisa si ganaste o perdiste.
+        bool comprobarDato(std::string palabra);
+
+        //pre: recibe un caracter valido.
+        //post: devuelve true si la letra arriesgada esta en la palabra a adivinar, false en caso contrario.
+        bool arriesgar(char letra);
+
+        //pre: recibe un string valido.
+        //post: devuelve true si el string es igual a la palabra, false en caso contrario.
+        bool arriesgar(std::string palabra);
+
+        //pre:-
+        //post: suma un error.
+        void sumarError();
+
+        //pre: recibe un caracter valido.
+        //post: devuelve true si la letra esta en letrasErroneas, false en caso contrario.
+        bool letraPerteneceErrores(char letra);
+
+        //pret: recibe un caracter valido.
+        //post: devuelve true si ya usaste y acertaste esa letra, false en caso contrario.
+        bool letraYaAcertada(char letra);
+
+        //pre:-
+        //post: devuelve true si tenes menos errores q el maximo permitido, false en caso contrario.
+        bool estaEnJuego();
+
+        //pre:-
+        //post: muestra palabraAdivinar.
+        void mostrarPalabraAdivinar();
+
+        //pre:-
+        //post: devuelve la cantidad de errores que el usuario puede cometer como maximo.
+        unsigned obtenerErroresMaximos();
+
+        //pre:-
+        //post: devuelve la cantidad de errores que le quedan al usuario.
+        void mostrarErroresRestantes();
+
+        //pre:-
+        //post: devuelve true si ya completo la palabraProgreso, false en caso contrario.
+        bool gano();
+
+        //pre:-
+        //post: devuelve las letras que el usuario ingresa erroneamente.
+        void mostrarLetrasErroneas();
 
 };
 
