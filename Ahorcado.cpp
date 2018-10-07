@@ -136,15 +136,11 @@ bool Ahorcado::arriesgar(char letra){
     }
     if (!acierto){
         letrasErroneas->asignarDato(cantidadErrores,letra);
-        sumarError();
+        cantidadErrores++;
     }
     return acierto;
 }
 
-void Ahorcado::sumarError() {
-
-    cantidadErrores++;
-}
 
 bool Ahorcado::letraPerteneceErrores(char letra) {
 
@@ -179,10 +175,6 @@ void Ahorcado::mostrarPalabraAdivinar() {
     cout<< "La palabra a adivinar era: " << palabraAdivinar << endl;
 }
 
-unsigned Ahorcado::obtenerErroresMaximos(){
-
-    return erroresMaximos;
-}
 
 void Ahorcado::mostrarErroresRestantes() {
 
