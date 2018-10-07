@@ -66,9 +66,7 @@ class Ahorcado {
         //post: devuelve true si el string es igual a la palabra, false en caso contrario.
         bool arriesgar(std::string palabra);
 
-        //pre:-
-        //post: suma un error.
-        void sumarError();
+
 
         //pre: recibe un caracter valido.
         //post: devuelve true si la letra esta en letrasErroneas, false en caso contrario.
@@ -86,9 +84,6 @@ class Ahorcado {
         //post: muestra palabraAdivinar.
         void mostrarPalabraAdivinar();
 
-        //pre:-
-        //post: devuelve la cantidad de errores que el usuario puede cometer como maximo.
-        unsigned obtenerErroresMaximos();
 
         //pre:-
         //post: devuelve la cantidad de errores que le quedan al usuario.
