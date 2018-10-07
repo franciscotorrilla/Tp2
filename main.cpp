@@ -35,7 +35,7 @@ int main() {
 }
 
 unsigned corroborarLongitud(unsigned longitud){
-    while ((1<longitud) && (longitud < 3)){
+    while ((0<longitud) && (longitud < 3)){
         cout << "Ingrese una longitud valida (debe ser mayor a 2): ";
         cin >> longitud;
     }
