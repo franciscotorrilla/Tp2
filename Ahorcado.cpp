@@ -40,7 +40,7 @@ unsigned Ahorcado::dificultad() {
         case '3' : cout << "Tenes 3 errores." <<endl;
             return 3;
         default:  cout << "Dato invalido." <<endl;
-            dificultad();
+            return dificultad();
     }
     return 0;
 }
