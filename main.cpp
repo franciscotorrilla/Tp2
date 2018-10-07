@@ -30,11 +30,12 @@ int main() {
             ahorcado.nuevaPalabra(palabra);
         }
     }
+    cout << "Final del juego." << endl;
     return 0;
 }
 
 unsigned corroborarLongitud(unsigned longitud){
-    while (longitud<3){
+    while ((1<longitud) && (longitud < 3)){
         cout << "Ingrese una longitud valida (debe ser mayor a 2): ";
         cin >> longitud;
     }
