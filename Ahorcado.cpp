@@ -114,10 +114,7 @@ bool Ahorcado::comprobarDato(string palabra) {
 
 bool Ahorcado::arriesgar(string palabra) {
 
-    if(palabra == palabraAdivinar) {
-        return true;
-    }
-    return false;
+    return (palabra == palabraAdivinar);
 }
 
 bool Ahorcado::arriesgar(char letra){
@@ -168,10 +165,7 @@ bool Ahorcado::letraYaAcertada(char letra) {
 
 bool Ahorcado::estaEnJuego() {
 
-    if(cantidadErrores < erroresMaximos){
-        return true;
-    }
-    return false;
+   return (cantidadErrores < erroresMaximos);
 }
 
 void Ahorcado::mostrarPalabraAdivinar() {
