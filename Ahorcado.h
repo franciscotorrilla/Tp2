@@ -66,8 +66,6 @@ class Ahorcado {
         //post: devuelve true si el string es igual a la palabra, false en caso contrario.
         bool arriesgar(std::string palabra);
 
-
-
         //pre: recibe un caracter valido.
         //post: devuelve true si la letra esta en letrasErroneas, false en caso contrario.
         bool letraPerteneceErrores(char letra);

@@ -94,7 +94,7 @@ bool Ahorcado::comprobarDato(char caracter) {
 bool Ahorcado::comprobarDato(string palabra) {
 
         if(palabra.length()!=palabraAdivinar.length()){
-            cout << "El tamanio no corresponde con el de la palabra a adivinar." <<endl;
+            cout << "El tamanio no corresponde con el de la palabra a adivinar." <<endl <<endl;
             return ingresoDeDato();
         }
         //IngresaPalabra
@@ -135,8 +135,12 @@ bool Ahorcado::arriesgar(char letra){
         }
     }
     if (!acierto){
+        cout <<"Fallaste. La letra no se encuentra en la palabra."<<endl;
         letrasErroneas->asignarDato(cantidadErrores,letra);
         cantidadErrores++;
+    }
+    else{
+        cout <<"Acertaste!! La letra se encuentra en la palabra."<<endl;
     }
     return acierto;
 }
